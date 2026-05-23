@@ -3,7 +3,7 @@ import shortuuid
 import sqlite3
 import os
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 
 app = Flask(__name__)
 DB = os.getenv("DB_PATH", "urls.db")
@@ -25,6 +25,16 @@ def init_db():
         last_clicked TIMESTAMP
     )""")
     conn.commit()
+
+@app.errorhandler(404)
+def not_found(e):
+    return jsonify({"error": "Not found"}), 404
+
+@app.route("/")
+def index():
+    conn = get_db()
+    count = conn.execute("SELECT COUNT(*) FROM urls").fetchone()[0]
+    return jsonify({"service": "url-shortener", "urls_shortened": count})
 
 @app.route("/shorten", methods=["POST"])
 def shorten():
