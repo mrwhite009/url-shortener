@@ -1,9 +1,23 @@
 # URL Shortener
 
-Simple URL shortener with SQLite backend and REST API.
+Simple Flask-based URL shortener with SQLite storage.
 
-## Endpoints
+## API
 
-- `POST /shorten` — create short URL
-- `GET /:code` — redirect to original URL
-- `GET /stats/:code` — view click stats
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/` | Service info |
+| `POST` | `/shorten` | Create short URL |
+| `GET` | `/:code` | Redirect to original |
+| `GET` | `/stats/:code` | View click statistics |
+
+## Quickstart
+
+```bash
+pip install -r requirements.txt
+python app.py
+```
+
+```bash
+curl -X POST http://localhost:5000/shorten -H "Content-Type: application/json" -d '{"url":"https://example.com"}'
+```
